@@ -157,12 +157,83 @@ footer {
 }
 
 .participants-list {
-  list-style: disc;
-  padding-left: 18px;
+  list-style: none;
+  padding-left: 0;
   margin: 0;
 }
 
 .participants-list li {
   margin-bottom: 6px;
   color: #37474f;
+}
+
+.participant-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.participant-item:hover {
+  background-color: #e9ecef;
+}
+
+.participant-email {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.delete-participant {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(238, 90, 90, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.delete-participant:hover {
+  background: linear-gradient(135deg, #ff5252, #d32f2f);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(238, 90, 90, 0.4);
+}
+
+.delete-participant:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(238, 90, 90, 0.3);
+}
+
+.delete-participant::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.delete-participant:hover::before {
+  left: 100%;
+}
+
+.no-participants {
+  list-style: none;
+  padding: 8px;
+  text-align: center;
 }
