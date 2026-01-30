@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const activitySelect = document.getElementById("activity");
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
-
+  const template = document.getElementById("activity-card-template");
+  
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
@@ -15,17 +16,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
-        const activityCard = document.createElement("div");
-        activityCard.className = "activity-card";
+        // Clone the template
+        const activityCard = template.content.cloneNode(true);
 
-        const spotsLeft = details.max_participants - details.participants.length;
+        // Populate card content
+        activityCard.querySelector('.activity-name').textContent = name;
+        activityCard.querySelector('.activity-description').textContent = details.description;
+        activityCard.querySelector('.activity-schedule').textContent = details.schedule;
 
-        activityCard.innerHTML = `
-          <h4>${name}</h4>
-          <p>${details.description}</p>
-          <p><strong>Schedule:</strong> ${details.schedule}</p>
-          <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
-        `;
+        // Populate participants list
+        const participantsList = activityCard.querySelector('.participants-list');
+        participantsList.innerHTML = '';
+        
+        if (details.participants && details.participants.length > 0) {
+          details.participants.forEach(email => {
+            const li = document.createElement('li');
+            li.textContent = email;
+            participantsList.appendChild(li);
+          });
+        } else {
+          const li = document.createElement('li');
+          li.textContent = 'No participants yet';
+          li.style.color = '#999';
+          li.style.fontStyle = 'italic';
+          participantsList.appendChild(li);
+        }
 
         activitiesList.appendChild(activityCard);
 
@@ -47,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const email = document.getElementById("email").value;
     const activity = document.getElementById("activity").value;
+    const messageDiv = document.getElementById("message");
 
     try {
       const response = await fetch(
@@ -73,6 +89,9 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         messageDiv.classList.add("hidden");
       }, 5000);
+
+      // Reload activities list
+      fetchActivities();
     } catch (error) {
       messageDiv.textContent = "Failed to sign up. Please try again.";
       messageDiv.className = "error";
